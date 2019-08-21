@@ -1,18 +1,26 @@
-getIDN {
-    out "*IDN?";
-    in "%\$1[^\r\n]";
-    ExtraInput = Ignore;
+Terminator = "\n";
+
+getPressure {
+	out "PR1\r";
+	wait 100;
+	out "05";
+	in "%d,%f";
 }
 
-cmd {
-    out "\$1";
+getUnits {
+    out "UNI\r";
+	wait 100;
+	out "05";
+    in "%{0|1|2|3}";
 }
 
-setD {
-    out "\$1 %d";
-}
-getD {
-    out "\$1?";
-    in "%d";
-    ExtraInput = Ignore;
+setUnits {
+    #UNI,1 = mbar
+    #UNI,2 = Torr
+    #UNI,3 = Pascal
+	#UNI,4 = Micron
+    out "UNI,%{0|1|2|3}\r";
+	wait 100;
+	out "05";
+    in "%{0|1|2|3}";
 }

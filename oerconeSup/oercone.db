@@ -17,3 +17,35 @@ record(bo, "$(P)DISABLE")
     field(ZNAM, "COMMS ENABLED")
     field(ONAM, "COMMS DISABLED")
 }
+
+record(ai, "$(P)PRESSURE")
+{
+	field(DESC, "Pressure")
+	field(DTYP, "stream")
+    field(INP, "@oercone.proto getPressure $(PORT)")
+	field(SCAN, "5 second")
+	field(EGU, "mbar")
+}
+
+record(mbbi, "$(P)UNITS") 
+{
+    field(SCAN, "1 second")
+    field(DTYP, "stream")
+    field(INP,  "@oercone.proto getUnits $(PORT)")
+    field(ZRST, "mbar")
+    field(ONST, "Torr")
+    field(TWST, "Pascal")
+	field(THST, "Micron")
+}
+
+record(mbbo, "$(P)UNITS:SP") 
+{
+    field(DTYP, "stream")
+    field(OUT,  "@oercone.proto setUnits $(PORT)")
+    field(ZRST, "mbar")
+    field(ONST, "Torr")
+    field(TWST, "Pascal")
+	field(THST, "Micron")
+}
+
+alias("$(P)UNITS", "$(P)UNITS:SP:RBV")
