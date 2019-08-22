@@ -1,5 +1,9 @@
 Terminator = "\n";
 
+# How Oerlikon Centre-One Pressure Gauge Works:
+## Send a command, then wait 100ms and send an ENQ ("05") to get the reply
+
+
 getPressure {
 	out "PR1\r";
 	wait 100;
