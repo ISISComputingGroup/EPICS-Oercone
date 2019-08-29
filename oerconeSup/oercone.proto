@@ -1,20 +1,20 @@
-Terminator = "\n";
+Terminator = "\r\n";
 
 # How Oerlikon Centre-One Pressure Gauge Works:
-## Send a command, then wait 100ms and send an ENQ ("05") to get the reply
+## Send a command, then wait 100ms and send an ENQ (05 in Hex) to get the reply
 
 
 getPressure {
-	out "PR1\r";
+	out "PR1";
 	wait 100;
-	out "05";
+	out ENQ;
 	in "%d,%f";
 }
 
 getUnits {
-    out "UNI\r";
+    out "UNI";
 	wait 100;
-	out "05";
+	out ENQ;
     in "%{0|1|2|3}";
 }
 
@@ -23,8 +23,5 @@ setUnits {
     #UNI,2 = Torr
     #UNI,3 = Pascal
 	#UNI,4 = Micron
-    out "UNI,%{0|1|2|3}\r";
-	wait 100;
-	out "05";
-    in "%{0|1|2|3}";
+    out "UNI,%{0|1|2|3}";
 }
