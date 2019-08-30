@@ -1,0 +1,93 @@
+######### Simulation SECTION ##############
+
+record(bo, "$(P)SIM") 
+{
+	field(DESC, "For the recsim")
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+    field(ZNAM, "NO")
+    field(ONAM, "YES")
+	field(VAL, "$(RECSIM=0)")	
+}
+
+alias("$(P)SIM", "$(P)SIM:SP")
+
+record(mbbi, "$(P)SIM:UNITS") 
+{
+    field(SCAN, "Passive")
+    field(DTYP, "Soft Channel")
+    field(ZRST, "mbar")
+    field(ONST, "Torr")
+    field(TWST, "Pascal")
+	field(THST, "Micron")
+}
+
+alias("$(P)SIM:UNITS","$(P)SIM:UNITS:SP")
+
+alias("$(P)SIM:UNITS","$(P)SIM:UNITS:SP:RBV")
+
+######### Simulation END ##############
+
+
+record(bo, "$(P)DISABLE")
+{
+    field(DESC, "Disable comms")
+    field(PINI, "YES")
+    field(VAL, "$(DISABLE=0)")
+    field(OMSL, "supervisory")
+    field(ZNAM, "COMMS ENABLED")
+    field(ONAM, "COMMS DISABLED")
+}
+
+record(ai, "$(P)PRESSURE")
+{
+	field(DESC, "Pressure")
+	field(DTYP, "stream")
+    field(INP, "@oercone.proto getPressure $(PORT)")
+	field(SCAN, "5 second")
+	field(EGU, "mbar")
+	field(ASG, "READONLY")
+	field(SDIS, "$(P)DISABLE")
+	
+	info(INTEREST, "HIGH")
+	info(archive, "VAL")
+	info(alarm, "OERCONE")
+}
+
+record(mbbi, "$(P)UNITS") 
+{
+	field(DESC, "Units of pressure the gauge is using")
+    field(SCAN, "1 second")
+    field(DTYP, "stream")
+    field(INP,  "@oercone.proto getUnits $(PORT)")
+    field(ZRST, "mbar")
+    field(ONST, "Torr")
+    field(TWST, "Pascal")
+	field(THST, "Micron")
+
+	field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:UNITS")
+    field(SDIS, "$(P)DISABLE")
+
+    info(INTEREST, "MEDIUM")
+    info(archive, "VAL")
+}
+
+record(mbbo, "$(P)UNITS:SP") 
+{
+	field(DESC, "Units setpoint")
+    field(DTYP, "stream")
+    field(OUT,  "@oercone.proto setUnits $(PORT)")
+    field(ZRST, "mbar")
+    field(ONST, "Torr")
+    field(TWST, "Pascal")
+	field(THST, "Micron")
+
+    field(FLNK, "$(P)UNITS")
+
+	field(SIML, "$(P)SIM")
+    field(SIOL, "$(P)SIM:UNITS:SP")
+    field(SDIS, "$(P)DISABLE")
+}
+
+alias("$(P)UNITS", "$(P)UNITS:SP:RBV")
