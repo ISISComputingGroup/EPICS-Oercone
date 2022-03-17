@@ -48,6 +48,7 @@ record(ai, "$(P)PRESSURE")
 	field(EGU, "mbar")
 	field(ASG, "READONLY")
 	field(SDIS, "$(P)DISABLE")
+	field(PREC, "3")
 	
 	info(INTEREST, "HIGH")
 	info(archive, "VAL")
